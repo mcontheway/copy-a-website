@@ -7,8 +7,11 @@ argument-hint: 目标网站 URL（如 https://example.com）
 
 ## 第一阶段：初始化与源码获取
 
-1. 从 `$ARGUMENTS` 获取原始 HTML 和 CSS
+1. 创建临时工作目录并获取源码
    ```bash
+   TEMP_DIR="/tmp/copyawebsite_work"
+   mkdir -p $TEMP_DIR
+   cd $TEMP_DIR
    curl -s $ARGUMENTS > original.html
    ```
 
@@ -19,16 +22,17 @@ argument-hint: 目标网站 URL（如 https://example.com）
        html = f.read()
    styles = re.findall(r'<style[^>]*>(.*?)</style>', html, re.DOTALL)
    # 确认 Style[0] 包含全局样式（body 定义）
+   # 保存到 /tmp/copyawebsite_work/original_style_*.css
    ```
 
-3. 创建项目结构并初始化
+3. 在项目根目录创建核心文件
    ```
    index.html      → 复刻的 HTML
    styles.css      → 合并后的 CSS
    script.js       → 交互逻辑
    ```
 
-**确认点**：所有 `<style>` 块都已正确提取？请继续前告诉我提取结果。
+**确认点**：所有 `<style>` 块都已正确提取到临时目录？请继续前告诉我提取结果。
 
 ---
 
@@ -59,8 +63,22 @@ argument-hint: 目标网站 URL（如 https://example.com）
 **执行步骤**：
 
 ```python
+import re
+import os
+
+TEMP_DIR = "/tmp/copyawebsite_work"
+os.chdir(TEMP_DIR)
+
+# 从临时目录读取提取的 style 块
+styles = []
+for i in range(10):
+    path = f"original_style_{i}.css"
+    if os.path.exists(path):
+        with open(path, 'r') as f:
+            styles.append(f.read())
+
 # 按优先级合并 CSS
-final_css = styles[0]  # 全局（包含背景色）
+final_css = styles[0] if len(styles) > 0 else ""  # 全局（包含背景色）
 for i in [1, 2, 5, 6]:
     if i < len(styles):
         final_css += "\n" + styles[i]
@@ -68,7 +86,8 @@ for i in [1, 2, 5, 6]:
 # 移除所有 [data-v-xxx] 属性选择器
 final_css = re.sub(r'\[data-v-[a-f0-9]+\]', '', final_css)
 
-with open('styles.css', 'w') as f:
+# 保存到项目根目录
+with open('../../styles.css', 'w') as f:  # 或指定项目路径
     f.write(final_css)
 ```
 
@@ -135,35 +154,6 @@ with open('styles.css', 'w') as f:
 
 ---
 
-## 第六阶段：文件清理与提交
-
-1. **删除所有临时文件**
-   ```bash
-   rm -f original.html original_style_*.css extracted_*.css icons_*.css test.html
-   ```
-
-2. **仅保留核心文件**
-   - ✅ `index.html`
-   - ✅ `styles.css`
-   - ✅ `script.js`
-   - ✅ `README.md`
-
-3. **提交到 develop 分支**
-   ```bash
-   git checkout -b develop
-   git add index.html styles.css script.js README.md
-   git commit -m "feat: 完成 [网站名] 1:1 复刻
-
-   - 精确复刻 HTML 结构
-   - 完整合并 CSS 样式（所有 style 块）
-   - 实现所有交互功能
-   - 支持完整的响应式设计"
-   
-   git push origin develop
-   ```
-
----
-
 ## 常见问题快速参考
 
 | 问题 | 症状 | 解决方案 |
@@ -190,4 +180,4 @@ with open('styles.css', 'w') as f:
 1. 完成 HTML 后告诉我
 2. CSS 合并后进行验证
 3. 对比时发现差异立即报告
-4. 文件清理前确认备份完成
+4. 所有临时文件自动保存到 `/tmp/copyawebsite_work`
