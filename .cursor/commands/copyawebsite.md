@@ -1,6 +1,6 @@
 ---
 description: 精确复刻任何网站的 1:1 设计与功能，包含对比验证和代码优化
-argument-hint: 目标网站 URL（如 https://example.com 或 https://www.baidu.com）
+argument-hint: 目标网站 URL（如 https://example.com）
 ---
 
 请按照以下步骤完成网站复刻：

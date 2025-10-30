@@ -292,42 +292,15 @@ copies or substantial portions of the Software.
 - ❌ 侵犯版权或商标
 - ❌ 用于诈骗或恶意目的
 
----
-
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
-如果你在复刻其他网站时发现新的技巧或问题，请分享：
-
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/amazing-feature`)
-3. 提交更改 (`git commit -m 'Add amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 开启 Pull Request
-
----
-
-## 📞 反馈与支持
-
-- 发现 Bug？提交 Issue
-- 有改进建议？讨论或 PR
-- 想分享复刻案例？欢迎展示
 
 ---
 
 ## 📚 相关资源
 
-- [Cursor IDE 官方文档](https://cursor.sh)
+- [Cursor Browser](https://cursor.com/en-US/docs/agent/browser)
 - [MDN Web Docs](https://developer.mozilla.org/)
 - [CSS Tricks](https://css-tricks.com/)
-- [Chrome DevTools 文档](https://developer.chrome.com/docs/devtools/)
+- [Chrome DevTools MCP](https://developer.chrome.com/blog/chrome-devtools-mcp)
 - [MCP - Model Context Protocol](https://modelcontextprotocol.io/)
 
----
 
-**项目状态**: ⚠️ 实验性阶段 — 功能完整但仍在优化中
-
-**最后更新**: 2025-10-30
-
-**维护者**: AI Coding Assistant
