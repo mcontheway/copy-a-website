@@ -1,38 +1,57 @@
 ---
 description: 精确复刻任何网站的 1:1 设计与功能，包含对比验证和代码优化
-argument-hint: 目标网站 URL（如 https://example.com）
+argument-hint: 目标网站 URL（如 https://example.com 或 https://www.baidu.com）
 ---
 
 请按照以下步骤完成网站复刻：
 
 ## 第一阶段：初始化与源码获取
 
-1. 创建临时工作目录并获取源码
+1. 提取二级域名并创建工作目录
+   ```python
+   import re
+   from urllib.parse import urlparse
+   
+   url = "$ARGUMENTS"
+   parsed = urlparse(url)
+   domain = parsed.netloc  # 例如: www.baidu.com
+   
+   # 提取二级域名 (baidu from www.baidu.com)
+   parts = domain.split('.')
+   if len(parts) >= 2:
+       second_level_domain = parts[-2]  # 倒数第二个
+   else:
+       second_level_domain = domain
+   
+   TEMP_DIR = f"/tmp/copyawebsite_{second_level_domain}"
+   print(f"工作目录: {TEMP_DIR}")
+   ```
+
+2. 创建临时工作目录并获取源码
    ```bash
-   TEMP_DIR="/tmp/copyawebsite_work"
    mkdir -p $TEMP_DIR
    cd $TEMP_DIR
    curl -s $ARGUMENTS > original.html
    ```
 
-2. 用 Python 提取所有 `<style>` 块并分析优先级
+3. 用 Python 提取所有 `<style>` 块并分析优先级
    ```python
    import re
    with open('original.html', 'r', encoding='utf-8', errors='ignore') as f:
        html = f.read()
    styles = re.findall(r'<style[^>]*>(.*?)</style>', html, re.DOTALL)
    # 确认 Style[0] 包含全局样式（body 定义）
-   # 保存到 /tmp/copyawebsite_work/original_style_*.css
+   # 保存到 $TEMP_DIR/original_style_*.css
    ```
 
-3. 在项目根目录创建核心文件
+4. 在项目根目录创建核心文件
    ```
    index.html      → 复刻的 HTML
    styles.css      → 合并后的 CSS
    script.js       → 交互逻辑
    ```
 
-**确认点**：所有 `<style>` 块都已正确提取到临时目录？请继续前告诉我提取结果。
+**确认点**：所有 `<style>` 块都已正确提取到 `$TEMP_DIR`？请继续前告诉我提取结果。
 
 ---
 
@@ -65,8 +84,16 @@ argument-hint: 目标网站 URL（如 https://example.com）
 ```python
 import re
 import os
+from urllib.parse import urlparse
 
-TEMP_DIR = "/tmp/copyawebsite_work"
+# 动态确定临时目录
+url = "$ARGUMENTS"
+parsed = urlparse(url)
+domain = parsed.netloc
+parts = domain.split('.')
+second_level_domain = parts[-2] if len(parts) >= 2 else domain
+TEMP_DIR = f"/tmp/copyawebsite_{second_level_domain}"
+
 os.chdir(TEMP_DIR)
 
 # 从临时目录读取提取的 style 块
@@ -89,6 +116,9 @@ final_css = re.sub(r'\[data-v-[a-f0-9]+\]', '', final_css)
 # 保存到项目根目录
 with open('../../styles.css', 'w') as f:  # 或指定项目路径
     f.write(final_css)
+
+print(f"✓ CSS 已合并并保存")
+print(f"✓ 临时文件保留在: {TEMP_DIR}")
 ```
 
 **关键检查清单**：
@@ -180,4 +210,4 @@ with open('../../styles.css', 'w') as f:  # 或指定项目路径
 1. 完成 HTML 后告诉我
 2. CSS 合并后进行验证
 3. 对比时发现差异立即报告
-4. 所有临时文件自动保存到 `/tmp/copyawebsite_work`
+4. 所有临时文件自动保存到 `/tmp/copyawebsite_[二级域名]`
