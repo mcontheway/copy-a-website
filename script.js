@@ -16,6 +16,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Android 下载对话框中的下载按钮
+    const downloadBtns = document.querySelectorAll('.download__btn');
+    downloadBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const title = this.querySelector('.download__btn-title').textContent;
+            if (title.includes('64 位')) {
+                window.open('https://dldir1v6.qq.com/weixin/android/weixin8064android2940_0x28004033_arm64_1.apk', '_blank');
+            } else if (title.includes('32 位')) {
+                window.open('https://dldir1v6.qq.com/weixin/android/weixin8042android2460.apk', '_blank');
+            }
+            // 关闭对话框
+            if (downloadDialog) {
+                downloadDialog.classList.remove('download__dialog-wrp_show');
+            }
+        });
+    });
+
     // 下载对话框关闭按钮
     if (downloadDialogClose) {
         downloadDialogClose.addEventListener('click', function() {
