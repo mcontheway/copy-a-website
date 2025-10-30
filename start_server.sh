@@ -29,7 +29,6 @@ if ps -p $SERVER_PID > /dev/null; then
     echo "✓ 服务器启动成功！"
     echo "✓ PID: $SERVER_PID"
     echo "✓ 访问地址: http://localhost:$PORT/"
-    echo "✓ 测试页面: http://localhost:$PORT/test.html"
     echo ""
     echo "停止服务器: kill $SERVER_PID"
     echo "或运行: lsof -ti:$PORT | xargs kill"
