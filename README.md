@@ -44,7 +44,7 @@
 
 ### 工作流程
 
-该项目封装了一个 **Claude 斜杠命令**，实现完整的网站复刻工作流：
+该项目封装了一个 [**Cursor 斜杠命令**](.cursor/commands/copyawebsite.md)，实现完整的网站复刻工作流：
 
 ```
 第一阶段：初始化 → 从目标URL获取源码，提取所有样式块
@@ -64,7 +64,7 @@
 project/
 ├── .cursor/
 │   └── commands/
-│       └── copyawebsite.md      # Claude 斜杠命令（核心）
+│       └── copyawebsite.md      # Cusor 斜杠命令（核心）
 ├── index.html                   # 复刻的 HTML 结构
 ├── styles.css                   # 合并的 CSS 样式（93 KB）
 ├── script.js                    # 交互逻辑
@@ -176,7 +176,7 @@ color: rgba(255, 255, 255, 0.9);
 
 虽然项目当前使用 **Cursor Browser**，但可以用其他工具替代：
 
-- **[chrome-devtools-mcp](https://github.com/modelcontextprotocol/servers/tree/main/src/mcp_servers/chrome_devtools)** - Chrome DevTools Protocol
+- **[chrome-devtools-mcp](https://developer.chrome.com/blog/chrome-devtools-mcp)** - Chrome DevTools MCP
 - **Playwright** / **Puppeteer** - 浏览器自动化
 - **Selenium** - 跨浏览器自动化
 - **直接 curl + 解析** - 轻量级方案
@@ -224,7 +224,7 @@ script.js (124 行)   →  交互逻辑
 
 ### 前提条件
 
-- Cursor IDE（或支持 Claude 指令的编辑器）
+- Cursor IDE（或支持 Cusor 指令的编辑器）
 - Python 3.7+
 - 本地 HTTP 服务器（用于测试）
 
